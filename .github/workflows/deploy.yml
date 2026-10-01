@@ -1,4 +1,4 @@
-name: Build and Deploy to EC2
+name: Build and Deploy Backend to EC2
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-app-name:latest
+          tags: abhi23631/multi-agent-rag-backend:latest
 
   deploy:
     needs: build-and-push
@@ -36,11 +36,11 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             # Pull the latest image from Docker Hub
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/your-app-name:latest
+            sudo docker pull abhi23631/multi-agent-rag-backend:latest
 
             # Stop and remove the old container if it exists
-            sudo docker stop my-running-app || true
-            sudo docker rm my-running-app || true
+            sudo docker stop multi-agent-backend || true
+            sudo docker rm multi-agent-backend || true
 
-            # Run the new container (change port mapping as needed, e.g., 80:3000)
-            sudo docker run -d --name my-running-app -p 80:3000 ${{ secrets.DOCKERHUB_USERNAME }}/your-app-name:latest
+            # Run the new container (Mapping port 8000. Change if your app runs on a different port)
+            sudo docker run -d --name multi-agent-backend -p 8000:8000 abhi23631/multi-agent-rag-backend:latest
